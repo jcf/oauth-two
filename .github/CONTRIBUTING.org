@@ -1,0 +1,12 @@
+All code should closely adhere to the [[https://github.com/bbatsov/clojure-style-guide][Clojure style guide]] to save us all from
+tedious debates. Use [[https://github.com/weavejester/cljfmt][cljfmt]] to tidy things up if you're unsure.
+
+All changes require accompanying tests, unless your changes are only related to
+documentation.
+
+Pull requests should change one thing, and one thing only. One change per
+commit. For example, avoid reformatting a file in the same commit as adding a
+new feature or fixing a bug.
+
+Please make sure you've updated any relevant documentation, and feel free to add
+more. American English in code, British English in prose.
