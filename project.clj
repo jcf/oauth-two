@@ -1,4 +1,4 @@
-(defproject oauth/oauth.two "0.1.0"
+(defproject oauth/oauth.two "0.2.0-SNAPSHOT"
   :description "OAuth 2.0 in Clojure"
   :url "https://github.com/jcf/oauth-two"
   :license {:name "Eclipse Public License"
