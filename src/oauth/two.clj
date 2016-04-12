@@ -22,10 +22,10 @@
    :request-method           RequestMethod
    :url                      s/Str})
 
-(def ^:private Scopes
+(def Scopes
   #{s/Str})
 
-(def ^:private ClientConfig
+(def ClientConfig
   {(s/optional-key :redirect-uri) s/Str
    (s/optional-key :scopes)       Scopes
    :access-uri                    s/Str
@@ -33,12 +33,12 @@
    :id                            s/Str
    :secret                        s/Str})
 
-(def ^:private AuthorizationParams
+(def AuthorizationParams
   {(s/optional-key :redirect-uri) s/Str
    (s/optional-key :scopes)       Scopes
    (s/optional-key :state)        s/Str})
 
-(def ^:private TokenRequestParams
+(def TokenRequestParams
   {(s/optional-key :redirect-uri) s/Str
    :code                          s/Str})
 
