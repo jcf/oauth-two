@@ -1,11 +1,3 @@
 machine:
   java:
     version: oraclejdk8
-
-dependencies:
-  override:
-    - lein sub deps
-
-test:
-  override:
-    - lein sub test
