@@ -1,0 +1,30 @@
+#+TITLE: Changes
+
+* 0.3.0
+Rename scopes to scope everywhere.
+
+You'll need to change the map you pass into ~make-client~ and/or
+~authorization-url~ so that instead of passing ~:scopes~ you pass ~:scope~.
+
+Before:
+
+#+begin_src clojure
+  (def client
+    (make-client {:scopes #{"read"}}))
+
+  (authorization-url client {:scopes #{"read" "write" "admin"}})
+#+end_src
+
+And now:
+
+#+begin_src clojure
+  (def client
+    (make-client {:scope #{"read"}}))
+
+  (authorization-url client {:scope #{"read" "write" "admin"}})
+#+end_src
+
+* 0.2.0
+Make useful schema like ~ClientConfig~, ~AuthorizationParams~, and
+~TokenRequestParams~ public so they can be used in third-party code that wants
+to validate the boundary between them and us.
