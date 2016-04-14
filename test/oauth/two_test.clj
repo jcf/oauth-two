@@ -36,9 +36,9 @@
   (are [conf] (make-client (merge test-client-config conf))
     {:redirect-uri "https://example.com/callback"}
     {:redirect-uri "https://example.com/callback"
-     :scopes       #{"read" "write"}}
-    {:scopes #{"read"}}
-    {:scopes #{"read" "write"}}))
+     :scope        #{"read" "write"}}
+    {:scope #{"read"}}
+    {:scope #{"read" "write"}}))
 
 ;; -----------------------------------------------------------------------------
 ;; Authorization URL
@@ -68,19 +68,19 @@
              "redirect_uri"  "https://client.example.com/override/callback"
              "response_type" "code"}}
 
-   {:desc   "with scopes in the client"
-    :client {:scopes #{"read" "write"}}
+   {:desc   "with scope in the client"
+    :client {:scope #{"read" "write"}}
     :params {}
     :query  {"client_id"     "client-id"
              "response_type" "code"
-             "scopes"        "read write"}}
+             "scope"         "read write"}}
 
-   {:desc   "when overriding the client scopes with params"
-    :client {:scopes #{"read" "write"}}
-    :params {:scopes #{"override"}}
+   {:desc   "when overriding the client scope with params"
+    :client {:scope #{"read" "write"}}
+    :params {:scope #{"override"}}
     :query  {"client_id"     "client-id"
              "response_type" "code"
-             "scopes"        "override"}}
+             "scope"         "override"}}
 
    {:desc   "with some state"
     :client {}
