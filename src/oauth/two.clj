@@ -22,12 +22,12 @@
    :request-method           RequestMethod
    :url                      s/Str})
 
-(def Scopes
+(def Scope
   #{s/Str})
 
 (def ClientConfig
   {(s/optional-key :redirect-uri) s/Str
-   (s/optional-key :scopes)       Scopes
+   (s/optional-key :scope)        Scope
    :access-uri                    s/Str
    :authorize-uri                 s/Str
    :id                            s/Str
@@ -35,7 +35,7 @@
 
 (def AuthorizationParams
   {(s/optional-key :redirect-uri) s/Str
-   (s/optional-key :scopes)       Scopes
+   (s/optional-key :scope)        Scope
    (s/optional-key :state)        s/Str})
 
 (def TokenRequestParams
@@ -45,7 +45,7 @@
 ;; -----------------------------------------------------------------------------
 ;; Client
 
-(defrecord Client [access-uri authorize-uri id secret redirect-uri scopes])
+(defrecord Client [access-uri authorize-uri id secret redirect-uri scope])
 
 (s/defn make-client :- Client
   [config :- ClientConfig]
@@ -64,9 +64,9 @@
 ;; -----------------------------------------------------------------------------
 ;; Authorization URL
 
-(s/defn join-scopes :- (s/maybe s/Str)
-  [scopes :- (s/maybe Scopes)]
-  (when scopes (str/join " " scopes)))
+(s/defn join-scope :- (s/maybe s/Str)
+  [scope :- (s/maybe Scope)]
+  (some->> scope sort (str/join " ")))
 
 (s/defn authorization-url :- s/Str
   ([client :- Client]
@@ -78,7 +78,7 @@
          "client_id"     (:id client)
          "redirect_uri"  (or (:redirect-uri params) (:redirect-uri client))
          "response_type" "code"
-         "scopes"        (join-scopes (or (:scopes params) (:scopes client)))
+         "scope"        (join-scope (or (:scope params) (:scope client)))
          "state"         (:state params)))))
 
 ;; -----------------------------------------------------------------------------
