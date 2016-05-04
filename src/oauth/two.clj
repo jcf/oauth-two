@@ -60,7 +60,7 @@
   (into {} (filter val m)))
 
 (def ^:private form-encode
-  (comp codec/form-encode filter-vals (partial into (sorted-map))))
+  (comp codec/form-encode filter-vals))
 
 ;; -----------------------------------------------------------------------------
 ;; Authorization URL
@@ -77,7 +77,7 @@
         "?"
         (form-encode
          (merge
-          (into {} (map (fn [[k v]] [(name k) v]) more))
+          more
           {"client_id"     (:id client)
            "redirect_uri"  (or (:redirect-uri params) (:redirect-uri client))
            "response_type" "code"
