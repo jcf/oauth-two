@@ -61,12 +61,12 @@ by providing an optional map as the second argument.
 #+end_src
 
 A third optional argument allows you to pass additional query parameters, like
-Google's "approval_prompt".
+[[https://developers.google.com/identity/protocols/OAuth2WebServer][Google's "prompt" parameter]].
 
 #+begin_src clojure
   (two/authorization-url client
                          {:state "hello world"}
-                         {:approval_prompt "force"})
+                         {:prompt "select_account"})
 #+end_src
 
 ** Handle response from provider
