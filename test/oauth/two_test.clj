@@ -54,6 +54,14 @@
     :query  {"client_id"     "client-id"
              "response_type" "code"}}
 
+   {:desc   "with custom params"
+    :client {}
+    :params {}
+    :more   {:approval_prompt "force"}
+    :query  {"approval_prompt" "force"
+             "client_id"       "client-id"
+             "response_type"   "code"}}
+
    {:desc   "with a redirect-uri in the client"
     :client {:redirect-uri "https://client.example.com/callback"}
     :params {}
@@ -90,9 +98,9 @@
              "state"         "this does not change"}}])
 
 (deftest t-authorization-url
-  (doseq [{:keys [desc client params query]} authorization-url-tests]
+  (doseq [{:keys [desc client more params query]} authorization-url-tests]
     (is (= query (-> (make-test-client client)
-                     (authorization-url params)
+                     (authorization-url params more)
                      split-url
                      second))
         desc)))
