@@ -1,4 +1,5 @@
 #+TITLE: OAuth Two
+#+STARTUP: overview
 
 #+BEGIN_HTML
 <a href="https://circleci.com/gh/jcf/oauth-two">
@@ -45,18 +46,27 @@ To kick off the OAuth dance we need to create a URL to send the user to. This
 URL is owned by the OAuth provider, and it's where the provider asks the user if
 they want to grant us access.
 
-To generate the authorisation URL we use the ~authorization-url` function like
+To generate the authorisation URL we use the ~authorization-url~ function like
 so:
 
 #+begin_src clojure
-  (two/authorization-url consumer)
+  (two/authorization-url client)
 #+end_src
 
 We can pass in additional parameters to include in the OAuth authorisation URL
 by providing an optional map as the second argument.
 
 #+begin_src clojure
-  (two/authorization-url consumer {:state "hello world"})
+  (two/authorization-url client {:state "hello world"})
+#+end_src
+
+A third optional argument allows you to pass additional query parameters, like
+Google's "approval_prompt".
+
+#+begin_src clojure
+  (two/authorization-url client
+                         {:state "hello world"}
+                         {:approval_prompt "force"})
 #+end_src
 
 ** Handle response from provider

@@ -1,5 +1,30 @@
 #+TITLE: Changes
 
+* 0.4.0
+Add support for including custom query parameters in the authorisation URL.
+
+#+begin_src clojure
+  (require '[oauth.two :refer :all])
+
+  (def client
+    (make-client {:authorize-uri "https://provider.com/oauth/authorize"
+                  :redirect-uri "https://example.com/"
+                  :scopes #{"read"}}))
+
+  (authorization-url client
+                     {:scopes #{"read" "write" "admin"}}
+                     {:approval_prompt "auto"})
+
+  ;; => https://provider.com/oauth/authorize?
+  ;;     approval_prompt=auto&
+  ;;     redirect_uri=https%3A%2F%2Fexample.com%2F&
+  ;;     response_type=code
+#+end_src
+
+This is more of a convenience feature than anything else. You used to be able to
+append parameters to the end of the URL, but as it's quite a common operation
+I've added support to the library.
+
 * 0.3.0
 Rename scopes to scope everywhere.
 

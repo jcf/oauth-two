@@ -9,7 +9,7 @@
 
 (def ^:private Map
   "Hash-map of keyword or string to any value"
-  {(s/either s/Keyword s/Str) s/Any})
+  {(s/cond-pre s/Keyword s/Str) s/Any})
 
 (def ^:private RequestMethod
   "Valid HTTP request methods"
@@ -36,7 +36,8 @@
 (def AuthorizationParams
   {(s/optional-key :redirect-uri) s/Str
    (s/optional-key :scope)        Scope
-   (s/optional-key :state)        s/Str})
+   (s/optional-key :state)        s/Str
+   (s/cond-pre s/Keyword s/Str)   s/Any})
 
 (def TokenRequestParams
   {(s/optional-key :redirect-uri) s/Str
@@ -59,7 +60,7 @@
   (into {} (filter val m)))
 
 (def ^:private form-encode
-  (comp codec/form-encode filter-vals sorted-map))
+  (comp codec/form-encode filter-vals))
 
 ;; -----------------------------------------------------------------------------
 ;; Authorization URL
@@ -69,17 +70,19 @@
   (some->> scope sort (str/join " ")))
 
 (s/defn authorization-url :- s/Str
-  ([client :- Client]
-   (authorization-url client {}))
-  ([client :- Client params :- AuthorizationParams]
+  ([client]        (authorization-url client {}     {}))
+  ([client params] (authorization-url client params {}))
+  ([client :- Client params :- AuthorizationParams more :- (s/maybe Map)]
    (str (:authorize-uri client)
         "?"
         (form-encode
-         "client_id"     (:id client)
-         "redirect_uri"  (or (:redirect-uri params) (:redirect-uri client))
-         "response_type" "code"
-         "scope"        (join-scope (or (:scope params) (:scope client)))
-         "state"         (:state params)))))
+         (merge
+          more
+          {"client_id"     (:id client)
+           "redirect_uri"  (or (:redirect-uri params) (:redirect-uri client))
+           "response_type" "code"
+           "scope"         (join-scope (or (:scope params) (:scope client)))
+           "state"         (:state params)})))))
 
 ;; -----------------------------------------------------------------------------
 ;; Access token request
@@ -100,7 +103,7 @@
      "content-type"  "application/x-www-form-urlencoded"})
    :body
    (form-encode
-    "client_id"    (:id client)
-    "code"         (:code params)
-    "grant_type"   "authorization_code"
-    "redirect_uri" (or (:redirect-uri params) (:redirect-uri client)))})
+    {"client_id"    (:id client)
+     "code"         (:code params)
+     "grant_type"   "authorization_code"
+     "redirect_uri" (or (:redirect-uri params) (:redirect-uri client))})})
